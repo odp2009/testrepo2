@@ -60,14 +60,19 @@ class Ball(GameSprite):
         self.rect.y += self.speed_y
 
         # Bounce off top and bottom walls
-        if self.rect.y <= 0 or self.rect.y >= 480:
-            self.speed_y *= -1
+        if self.rect.y <= 0:
+            self.speed_y = abs(self.speed_y)
+
+        if self.rect.y >= 480:
+            self.speed_y = -1*abs(self.speed_y)
 
         # Left player misses
         if self.rect.x <= 0:
             score_right += 1
             self.rect.x = 350
             self.rect.y = 250
+            self.speed_x = 5
+            self.speed_y = 5
             self.speed_x *= -1
 
         # Right player misses
@@ -75,6 +80,8 @@ class Ball(GameSprite):
             score_left += 1
             self.rect.x = 350
             self.rect.y = 250
+            self.speed_x = 5
+            self.speed_y = 5
             self.speed_x *= -1
 
 #SETUP#
@@ -132,6 +139,12 @@ while game:
 
         # Ball collision with paddles
         if sprite.collide_rect(ball, paddle_left) or sprite.collide_rect(ball, paddle_right):
+            if ball.speed_x < 0:
+                ball.speed_x -= 0.25
+                ball.speed_y -= 0.25
+            else: 
+                ball.speed_x += 0.25
+                ball.speed_y += 0.25
             ball.speed_x *= -1
 
         # Draw sprites
@@ -154,4 +167,3 @@ while game:
 
         clock.tick(FPS)
         display.update()
-    
