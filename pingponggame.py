@@ -44,8 +44,11 @@ class Player2(GameSprite):
 
 
 class Ball(GameSprite):
-    def __init__(self, color, x, y, speed_x, speed_y, width, height):
-        super().__init__(color, x, y, 0, width, height)
+    def __init__(self, image_spr, x, y, speed_x, speed_y, width, height):
+        super().__init__((255,255,255), x, y, 0, width, height)
+
+        self.image = transform.scale(image.load(image_spr), (width, height))
+
         self.speed_x = speed_x
         self.speed_y = speed_y
 
@@ -74,7 +77,6 @@ class Ball(GameSprite):
             self.rect.y = 250
             self.speed_x *= -1
 
-
 #SETUP#
 width = 700
 height = 500
@@ -83,7 +85,7 @@ window = display.set_mode((width, height))
 display.set_caption("Ping Pong")
 
 background = Surface((width, height))
-background.fill((0, 0, 0))
+background.fill((30, 144, 255))
 
 clock = time.Clock()
 FPS = 60
@@ -97,14 +99,14 @@ mixer.music.play()
 font.init()
 style = font.SysFont('Arial', 36)
 
-txt_win_left = style.render("LEFT PLAYER WINS!", True, (255, 255, 255))
-txt_win_right = style.render("RIGHT PLAYER WINS!", True, (255, 255, 255))
+txt_win_left = style.render("LEFT PLAYER WINS!", True, (151, 255, 23))
+txt_win_right = style.render("RIGHT PLAYER WINS!", True, (151, 255, 23))
 
 #SPRITES#
 paddle_left = Player1((255, 255, 255), 30, 200, 7, 20, 100)
 paddle_right = Player2((255, 255, 255), 650, 200, 7, 20, 100)
 
-ball = Ball((255, 255, 255), 350, 250, 5, 5, 20, 20)
+ball = Ball("ball.png", 350, 250, 5, 5, 30, 30)
 
 #GAME LOOP#
 game = True
@@ -143,12 +145,13 @@ while game:
 
         # Win conditions
         if score_left >= 5:
-            window.blit(txt_win_left, (180, 230))
+            window.blit(txt_win_left, (180, 200))
             finish = True
 
         if score_right >= 5:
-            window.blit(txt_win_right, (160, 230))
+            window.blit(txt_win_right, (160, 200))
             finish = True
 
         clock.tick(FPS)
         display.update()
+    
