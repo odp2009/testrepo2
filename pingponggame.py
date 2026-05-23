@@ -90,7 +90,7 @@ FPS = 60
 
 #MUSIC#
 mixer.init()
-mixer.music.load("mii_music.mp3")
+mixer.music.load("bgm.mp3")
 mixer.music.play()
 
 #TEXT#s
